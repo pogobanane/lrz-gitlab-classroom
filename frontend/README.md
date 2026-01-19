@@ -1,3 +1,5 @@
+This project was forked from the birdgage-and-knot repo from net.cit.tum.de.
+
 # Generate a new link
 
 For:
