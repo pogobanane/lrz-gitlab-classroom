@@ -1,0 +1,27 @@
+% layout 'default';
+% title 'Welcome';
+
+<p class="text-muted fw-light m-1">Make sure you have signed in at least once at the <a class="text-reset"  href="<%= config('gitlab') %>">LRZ GitLab</a>!</p>
+
+%= form_for 'tjwt' => ( 'alt' => 'confirm intention' ) => begin
+    %= csrf_field
+    % if (stash 'check_matrikel') {
+        %= text_field 'matrikel', ('id' => 'matrikel', 'class' => 'form-control mb-4', 'placeholder' => 'Personal Identifier', 'autofocus' => 'autofocus')
+    % }
+    %= submit_button 'Start' => ('class' => 'btn btn-lg btn-outline-primary w-100')
+% end
+
+<p class="col-7 text-muted fw-light m-1">
+In GRNVS we use the <a class="text-reset" href="<%= config('gitlab') %>">LRZ GitLab</a> to publish additional lecture material and for the submission and testing of the programming exercises.
+After pressing "Start" we will:
+</p>
+
+<ul class="col-7 text-muted fw-light m-1">
+  <li class="">invite you to the GRNVS material repository</li>
+  <li class="">create and invite you to a personal Git repository for each programming exercise (after they are available). You have to repeat this step whenever we publish a new exercise.</li>
+</ul>
+
+<p class="col-7 text-muted fw-light m-1">
+To know who you are we need to grant us limited access to both <a class="text-reset" href="<%= config('tumonline') %>">TUMonline</a> and the <a class="text-reset" href="<%= config('gitlab') %>">LRZ GitLab</a>.
+If you have any questions or need help, write a mail to grnvs[at]net.in.tum.de.
+</p>

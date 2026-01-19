@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link href="/s/style.css" rel="stylesheet">
+		<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>␖</text></svg>">
+    <link href="/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+		<title><%= title %></title>
+	</head>
+	<body>
+
+	<header class="container">
+      <div class="row">
+        <div class="twelve columns">
+          <div class="logo-bar">
+            <div class="logo-bar__inner">
+
+              <div class="logo-bar__word-mark-link"><a href="http://www.net.in.tum.de/" title="Chair of Network Architectures and Services" target="_self" class="logo-bar__link">
+      Chair of Network Architectures and Services
+    </a><br>
+
+    <a href="http://www.cit.tum.de/" title="TUM School of Computation, Information and Technology" target="_self" class="logo-bar__link">
+      TUM School of Computation, Information and Technology
+    </a><br>
+    <a href="http://www.tum.de/" title="TUM School of Computation, Information and Technology" target="_self" class="logo-bar__link">
+      Technical University of Munich
+    </a>
+    </div>
+
+              <a href="http://www.tum.de" title="Startseite" target="_self" class="logo-bar__link logo-bar__logo-link">
+                 <img src="/s/tum_logo.svg" width="73" height="38" alt="TUM">
+            </a>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main>
+        <div class="page-body">
+        <div class="container">
+        <div class="row">
+            <div class="d-sm-flex flex-column justify-content-center align-items-center gap-3", style="min-height: 50vh;">
+                <h1 class="h3 mt-2 mb-5">Connect GRNVS with LRZ GitLab</h1>
+
+		        <%= content %>
+
+		        </div>
+		    </div>
+		</div>
+		</div>
+        </div>
+	</main>
+	<footer class="container">
+      <div class="row">
+
+        <div class="sitefooter">
+
+          <nav class="meta-nav">
+            <ul class="meta-nav__list">
+              <li class="meta-nav__item">
+                <a href="https://grnvs.net.in.tum.de/static/impressum.html" class="meta-nav__link">Legal Details - Imprint | Data Protection Statement</a>
+              </li>
+            </ul>
+          </nav>
+        </div>
+      </div>
+    </footer>
+
+	</body>
+</html>

@@ -1,0 +1,12 @@
+severity = 1
+color = 1
+
+# disable some critisism
+[-Perl::Critic::Policy::ControlStructures::ProhibitPostfixControls]
+[-Perl::Critic::Policy::RegularExpressions::RequireExtendedFormatting]
+[-Perl::Critic::Policy::ValuesAndExpressions::ProhibitLongChainsOfMethodCalls]
+[-Perl::Critic::Policy::ValuesAndExpressions::ProhibitVersionStrings]
+
+[Modules::ProhibitExcessMainComplexity]
+# default is 20
+max_mccabe = 40
