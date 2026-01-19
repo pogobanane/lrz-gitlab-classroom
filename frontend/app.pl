@@ -365,7 +365,7 @@ get '/' => sub ($c) { return $c->render('landing'); };
 app->hook(    # security headers
     'before_dispatch' => sub ($c) {
         $c->res->headers->header('X-Frame-Options' => 'DENY');
-        $c->res->headers->header('Content-Security-Policy' => "frame-ancestors 'none'");
+        $c->res->headers->header('Content-Security-Policy' => "frame-ancestors 'none'; object-src 'none'; script-src 'none'");
     }
 );
 app->hook(    # declare metrics
