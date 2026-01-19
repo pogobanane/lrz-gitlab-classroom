@@ -17,8 +17,8 @@
           <div class="logo-bar">
             <div class="logo-bar__inner">
 
-              <div class="logo-bar__word-mark-link"><a href="http://www.net.in.tum.de/" title="Chair of Network Architectures and Services" target="_self" class="logo-bar__link">
-      Chair of Network Architectures and Services
+              <div class="logo-bar__word-mark-link"><a href="http://dos.cit.tum.de/" title="Systems Research Group" target="_self" class="logo-bar__link">
+                Systems Research Group
     </a><br>
 
     <a href="http://www.cit.tum.de/" title="TUM School of Computation, Information and Technology" target="_self" class="logo-bar__link">
@@ -44,7 +44,7 @@
         <div class="container">
         <div class="row">
             <div class="d-sm-flex flex-column justify-content-center align-items-center gap-3", style="min-height: 50vh;">
-                <h1 class="h3 mt-2 mb-5">Connect GRNVS with LRZ GitLab</h1>
+                <h1 class="h2 mt-2 mb-5">DOS GitLab Classroom</h1>
 
 		        <%= content %>
 
@@ -62,7 +62,10 @@
           <nav class="meta-nav">
             <ul class="meta-nav__list">
               <li class="meta-nav__item">
-                <a href="https://grnvs.net.in.tum.de/static/impressum.html" class="meta-nav__link">Legal Details - Imprint | Data Protection Statement</a>
+                <a href="/gdpr" class="meta-nav__link">Data Protection Statement</a>
+              </li>
+              <li class="meta-nav__item">
+                <a href="https://dse.in.tum.de/contact/" class="meta-nav__link">Impressum</a>
               </li>
             </ul>
           </nav>
