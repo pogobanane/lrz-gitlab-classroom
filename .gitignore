@@ -1,0 +1,14 @@
+CLAUDE.md
+grnvs-gitlab-importer-main*
+grnvs-gitlab-importer-main/
+tumonline-gitlab-oauth*
+tumonline-gitlab-oauth/
+
+/**/*.tdy
+/**/*.bak
+/**/perltidy.ERR
+/**/*.sw[po]
+/.envrc
+/__pycache__
+.idea
+
