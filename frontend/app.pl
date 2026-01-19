@@ -362,6 +362,12 @@ get '/bootstrap/css/bootstrap.min.css' => sub ($c) { return $c->reply->static('b
 get '/gdpr' => sub ($c) { return $c->render('gdpr'); };
 get '/' => sub ($c) { return $c->render('landing'); };
 
+app->hook(    # security headers
+    'before_dispatch' => sub ($c) {
+        $c->res->headers->header('X-Frame-Options' => 'DENY');
+        $c->res->headers->header('Content-Security-Policy' => "frame-ancestors 'none'");
+    }
+);
 app->hook(    # declare metrics
     'before_server_start' => sub ( $server, $app ) {
         $app->prometheus->declare(
