@@ -360,6 +360,7 @@ get '/s/tum_logo.svg' => sub ($c) { return $c->reply->static('tum_logo.svg'); };
 get '/bootstrap/css/bootstrap.min.css' => sub ($c) { return $c->reply->static('bootstrap.min.css'); };
 
 get '/gdpr' => sub ($c) { return $c->render('gdpr'); };
+get '/' => sub ($c) { return $c->render('landing'); };
 
 app->hook(    # declare metrics
     'before_server_start' => sub ( $server, $app ) {

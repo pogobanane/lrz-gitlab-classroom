@@ -1,0 +1,10 @@
+% layout 'default';
+% title 'Welcome';
+
+<p>
+This application enrolls you in the classroom submission system of the Chair of Distributed and Operating Systems (DOS). It links your TUMonline account with your LRZ GitLab account. Upon enrollment, you can use it to create GitLab repositories to work on your assignments.
+</p>
+
+<p>
+You will receive a sign-up link once the course starts.
+</p>
