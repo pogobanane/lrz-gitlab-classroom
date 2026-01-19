@@ -359,6 +359,8 @@ get '/s/style.css'    => sub ($c) { return $c->reply->static('style.css'); };
 get '/s/tum_logo.svg' => sub ($c) { return $c->reply->static('tum_logo.svg'); };
 get '/bootstrap/css/bootstrap.min.css' => sub ($c) { return $c->reply->static('bootstrap.min.css'); };
 
+get '/gdpr' => sub ($c) { return $c->render('gdpr'); };
+
 app->hook(    # declare metrics
     'before_server_start' => sub ( $server, $app ) {
         $app->prometheus->declare(
