@@ -8,11 +8,34 @@
   outputs = { self, nixpkgs }: let
     pkgs = nixpkgs.legacyPackages.x86_64-linux;
     flakepkgs = self.packages.x86_64-linux;
+    frontendPerl = pkgs.perl.withPackages (ps: [
+      ps.DBDSQLite
+      ps.Mojolicious
+      ps.MojoJWT
+      ps.MojoSQLite
+      ps.PrometheusTiny
+      flakepkgs.MojoliciousPluginOAuth2
+    ]);
   in {
 
     packages.x86_64-linux.hello = nixpkgs.legacyPackages.x86_64-linux.hello;
 
     packages.x86_64-linux.default = flakepkgs.hello;
+
+    packages.x86_64-linux.frontend = pkgs.stdenv.mkDerivation {
+      pname = "lrz-gitlab-classroom-frontend";
+      version = "2026-01-19";
+      src = ./frontend;
+      buildInputs = [ frontendPerl ];
+      nativeBuildInputs = [ pkgs.makeWrapper ];
+      installPhase = ''
+        mkdir -p $out/bin $out/share/templates
+        cp -r templates/* $out/share/templates/
+        cp app.pl $out/share/app.pl
+        makeWrapper ${frontendPerl}/bin/perl $out/bin/lrz-gitlab-classroom-frontend \
+          --add-flags "$out/share/app.pl"
+      '';
+    };
 
     packages.x86_64-linux.MojoliciousPluginOAuth2 = pkgs.perlPackages.buildPerlPackage {
       pname = "Mojolicious-Plugin-OAuth2";
@@ -32,14 +55,6 @@
     devShells.x86_64-linux.default = pkgs.mkShell {
       buildInputs = with pkgs; [
         jq
-        (perl.withPackages (ps: [
-          ps.DBDSQLite
-          ps.Mojolicious
-          ps.MojoJWT
-          ps.MojoSQLite
-          ps.PrometheusTiny
-          flakepkgs.MojoliciousPluginOAuth2
-        ]))
       ];
     };
 
