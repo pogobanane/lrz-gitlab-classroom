@@ -1,0 +1,40 @@
+% layout 'default';
+% title 'Courses';
+% use Time::Piece;
+% my $today = localtime->ymd;
+
+% for my $course_id (sort keys %{stash('courses')}) {
+%   my $course = stash('courses')->{$course_id};
+%   my $assignments = $course->{assignments} // [];
+%   next unless @$assignments;
+
+<div style="width: 100%; text-align: left;">
+    <h2><%= $course_id %></h2>
+    <div style="display: flex; flex-wrap: wrap; gap: 15px;">
+%   for my $assignment (@$assignments) {
+%       my $not_before = $assignment->{notBefore} // '';
+%       my $not_after = $assignment->{notAfter} // '';
+%       my $status = 'upcoming';
+%       my $label_class = 'label-primary';
+%       if ($not_before && $today ge $not_before) {
+%           if ($not_after && $today le $not_after) {
+%               $status = 'active';
+%               $label_class = 'label-success';
+%           } elsif ($not_after && $today gt $not_after) {
+%               $status = 'closed';
+%               $label_class = 'label-default';
+%           }
+%       }
+        <div class="panel panel-default" style="width: 280px; margin: 0;">
+            <div class="panel-body">
+                <h4 style="margin-top: 0;"><%= $assignment->{name} %></h4>
+                <p class="text-muted">
+                    <%= $not_before %> &ndash; <%= $not_after %>
+                </p>
+                <span class="label <%= $label_class %>"><%= $status %></span>
+            </div>
+        </div>
+%   }
+    </div>
+</div>
+% }

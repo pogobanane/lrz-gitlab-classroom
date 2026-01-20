@@ -360,6 +360,20 @@ get '/s/tum_logo.svg' => sub ($c) { return $c->reply->static('tum_logo.svg'); };
 get '/bootstrap/css/bootstrap.min.css' => sub ($c) { return $c->reply->static('bootstrap.min.css'); };
 
 get '/gdpr' => sub ($c) { return $c->render('gdpr'); };
+
+get '/courses' => sub ($c) {
+    my $courses_file = Mojo::File->new(
+        $ENV{STATE_DIRECTORY}
+          // croak 'No STATE_DIRECTORY defined'
+    )->child('courses.json');
+    return $c->reply->exception('Courses not configured')->rendered(404)
+      unless -f $courses_file;
+
+    my $courses = Mojo::JSON::decode_json( $courses_file->slurp );
+    $c->stash( 'courses' => $courses );
+    return $c->render('courses');
+};
+
 get '/' => sub ($c) { return $c->render('landing'); };
 
 app->hook(    # security headers
