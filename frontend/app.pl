@@ -191,7 +191,7 @@ get '/oauth/tumonline' => sub ($c) {
                         my $head = shift @{ $tx->res->json };
                         die 'Not enrolled in the course, '
                           . 'please register in TUMonline.' . "\n"
-                          unless ( $head && $head->{angemeldet_flag} eq 'J' );
+                          unless ( ($ENV{IGNORE_ENROLLMENT_CHECK} // '') eq '1' || $head && $head->{angemeldet_flag} eq 'J' );
                         return;
                     },
                     sub ($reason) {
