@@ -12,7 +12,7 @@ import pathlib
 import types
 import click
 
-import aionotify  # type: ignore
+from asyncinotify import Inotify, Mask
 import peewee  # type: ignore
 import playhouse.db_url  # type: ignore
 import playhouse.reflection  # type: ignore
@@ -368,17 +368,19 @@ def add_push_rule(project, branch_name_regex=""):
         logging.info(f'Could add push rule for {project.name}')
 
 
-async def watch_loop(watcher: aionotify.Watcher, model: types.SimpleNamespace, store: str, courses: str, update_hook) -> None:
+async def watch_loop(inotify: Inotify, db_name: str, model: types.SimpleNamespace, store: str, courses: str, update_hook) -> None:
     """ call appropriate function for each received event """
-    await watcher.setup(asyncio.get_running_loop())
     await on_update(model, store, courses, update_hook)
-    while not watcher.closed:
-        logging.debug("Waiting for event")
-        event: aionotify.Event = await watcher.get_event()  # pylint: disable=no-member
+    async for event in inotify:
+        # Only process events for the database file (including -wal, -shm, -journal)
         logging.debug("Got event: %s", event)
+        if event.name:
+            filename = event.name.name
+            if not (filename == db_name or filename.startswith(db_name + '-')):
+                logging.debug("Ignoring event for %s", event.name)
+                continue
         task: asyncio.Task = asyncio.create_task(on_update(model, store, courses, update_hook))
         logging.debug("Scheduled task: %s", task)
-    watcher.close()
 
 
 @click.command()
@@ -404,13 +406,11 @@ def main(db: str, store: str, courses: str, error_log: str, update_hook: str):
     model = types.SimpleNamespace(**playhouse.reflection.generate_models(database))
 
     # prepare inotify watcher
-    watcher = aionotify.Watcher()
-    watcher.watch(
-        alias=db.name, path=str(db.parent), flags=aionotify.Flags.MODIFY
-    )
+    inotify = Inotify()
+    inotify.add_watch(db.parent, Mask.MODIFY)
 
     # process events
-    asyncio.run(watch_loop(watcher, model, store, courses, update_hook))
+    asyncio.run(watch_loop(inotify, db.name, model, store, courses, update_hook))
 
 
 if __name__ == "__main__":
