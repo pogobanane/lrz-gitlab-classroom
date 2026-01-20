@@ -499,7 +499,7 @@ Otherwise, press above button to start.
 % layout 'default';
 % title 'Thank you';
 <p class="lead">
-The request has been received and will be processed soon.
+You have been signed up for assignments. Your signup will be processed soon.
 </p>
 
 @@ layouts/default.html.ep
