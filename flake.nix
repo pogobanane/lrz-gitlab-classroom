@@ -16,6 +16,19 @@
       ps.PrometheusTiny
       flakepkgs.MojoliciousPluginOAuth2
     ]);
+    pythonEnv = pkgs.python3.withPackages (ps: with ps; [
+      # aionotify
+      asyncinotify
+      certifi
+      charset-normalizer
+      click
+      idna
+      peewee
+      python-gitlab
+      requests
+      requests-toolbelt
+      urllib3
+    ]);
   in {
 
     packages.x86_64-linux.hello = nixpkgs.legacyPackages.x86_64-linux.hello;
@@ -37,6 +50,39 @@
       '';
     };
 
+
+    # { lib
+    #   , buildPythonPackage
+    #   , fetchFromGitHub
+    #   , asynctest
+    #   , pythonOlder
+    #   }:
+
+    packages.x86_64-linux.aionotify = pkgs.python3Packages.buildPythonPackage rec {
+      pname = "aionotify";
+      version = "0.3.1";
+      pyproject = true;
+
+      src = pkgs.fetchFromGitHub {
+        owner = "rbarrois";
+        repo = "aionotify";
+        rev = version;
+        sha256 = "sha256-OuFTFnoxB14I2k7OXVoZNWsX33lKe86KUJnKRSB4CNw=";
+      };
+
+      checkInputs = with pkgs.python3Packages; [
+        # asynctest
+      ];
+
+      meta = with pkgs.lib; {
+        homepage = "https://github.com/rbarrois/aionotify";
+        description = "Simple, asyncio-based inotify library for Python";
+        license = with pkgs.lib.licenses; [ bsd2 ];
+        platforms = platforms.linux;
+        maintainers = with lib.maintainers; [ pogobanane ];
+      };
+    };
+
     packages.x86_64-linux.MojoliciousPluginOAuth2 = pkgs.perlPackages.buildPerlPackage {
       pname = "Mojolicious-Plugin-OAuth2";
       version = "2.02";
@@ -55,7 +101,9 @@
     devShells.x86_64-linux.default = pkgs.mkShell {
       buildInputs = with pkgs; [
         jq
+        sqlite
         frontendPerl
+        pythonEnv
       ];
     };
 

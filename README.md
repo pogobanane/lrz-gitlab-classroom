@@ -7,6 +7,13 @@ If things don't work:
 - Check if github token is expired after a year.
 
 
+## Lecturer Usage
+
+{"c":"17W","g":46686,"l":"950798529","r":97579,"t":97841}
+
+where l is the lecture id
+
+
 ## Design
 
 The system consists of two parts. A perl-based website, and a python-based worker/backend. Students receive a (possibly) unique sign-up link to sign up. After signup, the website stores the user info in the state dir. The python worker monitors files in the state dir for changes, and creates the student repositories on gitlab accordingly.
