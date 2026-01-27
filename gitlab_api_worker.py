@@ -104,7 +104,6 @@ def connect_store(store):
     with database:
         database.create_tables([Student, PublicKey])
 
-
 async def on_update(model: peewee.Model, store: str, courses_file: str, update_hook: str) -> None:
     """ process database update """
 
@@ -159,8 +158,11 @@ async def on_update(model: peewee.Model, store: str, courses_file: str, update_h
             newest.delete_instance()
 
 
-def process_gitlab_task(matrikel: str, oauth_token: str, metadata, courses: dict):
-    student = gitlab.Gitlab(GITLAB_URL, oauth_token=oauth_token)
+def process_gitlab_task(matrikel: str, oauth_token: str, metadata, courses: dict, token=None):
+    if oauth_token is not None:
+        student = gitlab.Gitlab(GITLAB_URL, oauth_token=oauth_token)
+    else:
+        student = gitlab.Gitlab(GITLAB_URL, token)
     student.auth()
 
     user_gitlab_id = student.user.id
@@ -322,7 +324,7 @@ def add_create_project(course, assignment, group: Group, group_admin, user, tuto
             'namespace_id': group.id,
         } | project_config)
         time.sleep(5)
-    
+
     add_user(user, project, gitlab.const.DEVELOPER_ACCESS, assignment.get('notAfter'))
 
     # Protect tags
@@ -383,13 +385,22 @@ async def watch_loop(inotify: Inotify, db_name: str, model: types.SimpleNamespac
         logging.debug("Scheduled task: %s", task)
 
 
+def foobar(courses_file: str):
+    courses_text = pathlib.Path(courses_file).read_text()
+    courses = json.loads(courses_text)
+    meta = json.loads('{"c":"17W","g":46686,"l":"950798529","r":97579,"t":97841}')
+    process_gitlab_task("123456", None, meta, courses, token=os.getenv("PERSONAL_DEBUG_GITLAB_TOKEN"))
+    pass
+
+
 @click.command()
 @click.option('--db', type=click.Path(exists=False, file_okay=True, dir_okay=False), required=True)
 @click.option('--store', type=click.Path(exists=False, file_okay=True, dir_okay=False), required=True)
 @click.option('--courses', type=click.Path(exists=False, file_okay=True, dir_okay=False), required=True)
 @click.option('--error-log', type=click.Path(exists=False, file_okay=True, dir_okay=False), required=True)
 @click.option('--update-hook', type=click.Path(exists=False, file_okay=True, dir_okay=False), required=False)
-def main(db: str, store: str, courses: str, error_log: str, update_hook: str):
+@click.option('--test', is_flag=True, default=False)
+def main(db: str, store: str, courses: str, error_log: str, update_hook: str, test: bool):
     """ wait for changes and call appropriate function """
     db = pathlib.Path(db)
     logging.basicConfig(level=logging.DEBUG)
@@ -410,7 +421,10 @@ def main(db: str, store: str, courses: str, error_log: str, update_hook: str):
     inotify.add_watch(db.parent, Mask.MODIFY)
 
     # process events
-    asyncio.run(watch_loop(inotify, db.name, model, store, courses, update_hook))
+    if not test:
+        asyncio.run(watch_loop(inotify, db.name, model, store, courses, update_hook))
+    else:
+        foobar(courses)
 
 
 if __name__ == "__main__":
