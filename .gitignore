@@ -11,4 +11,4 @@ tumonline-gitlab-oauth/
 /.envrc
 /__pycache__
 .idea
-
+SECRETS
